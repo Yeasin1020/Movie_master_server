@@ -48,6 +48,12 @@ async function run() {
 			}
 		})
 
+		///////******** Edit Delete Movies ********/////////
+		app.get('/allMovies', async (req, res) => {
+			const cursor = await MoviesCollection.find().toArray();
+			res.send(cursor);
+		})
+
 
 		app.post('/addMovie', async (req, res) => {
 			const addMovie = req.body;
@@ -79,5 +85,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-	console.log(`SIMPLE MOIVE IS RUNNING on port, ${ port }`);
+	console.log(`SIMPLE MOVIE IS RUNNING on port, ${ port }`);
 })

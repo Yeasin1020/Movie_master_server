@@ -114,6 +114,64 @@ async function run() {
 			res.send(result)
 		});
 
+
+
+		///////******** Single movie details ********/////////
+		app.get("/movieDetails/:id", async (req, res) => {
+			const id = req.params.id;
+			const query = {
+				_id: new ObjectId(id),
+			};
+
+			const options = {
+				projection: {
+					name: 1,
+					type: 1,
+					category: 1,
+					thumbnail: 1,
+					MovieLink: 1,
+					desc: 1,
+					Quality: 1,
+					Language: 1,
+					hostEmail: 1,
+					hostName: 1,
+					_id: 1,
+				},
+			};
+
+			const result = await MoviesCollection.findOne(query, options);
+			res.send(result);
+		});
+
+		///////******** Single anime details ********/////////
+		app.get("/animeDetails/:id", async (req, res) => {
+			const id = req.params.id;
+			const query = {
+				_id: new ObjectId(id),
+			};
+
+			const options = {
+				projection: {
+					name: 1,
+					type: 1,
+					category: 1,
+					thumbnail: 1,
+					MovieLink: 1,
+					desc: 1,
+					Quality: 1,
+					Language: 1,
+					hostEmail: 1,
+					hostName: 1,
+					_id: 1,
+				},
+			};
+
+			const result = await MoviesCollection.findOne(query, options);
+			res.send(result);
+		});
+
+
+
 		///////******** Delete Movie ********/////////
 
 		app.delete('/allMovies/:id', async (req, res) => {

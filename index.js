@@ -26,7 +26,7 @@ const client = new MongoClient(uri, {
 async function run() {
 	try {
 		// Connect the client to the server	(optional starting in v4.7)
-		await client.connect();
+		client.connect();
 
 		const database = client.db("MoviesDB");
 		const MoviesCollection = database.collection("AllMovies")
@@ -48,7 +48,7 @@ async function run() {
 			}
 		})
 
-		///////******** Edit Delete Movies ********/////////
+		//////******** Edit Delete Movies ********////////
 		app.get('/allMovies', async (req, res) => {
 			const cursor = await MoviesCollection.find().toArray();
 			res.send(cursor);

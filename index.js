@@ -48,7 +48,7 @@ async function run() {
 			}
 		})
 
-		///////******** Edit Delete Movies ********/////////
+		//////******** Edit Delete Movies ********////////
 		app.get('/allMovies', async (req, res) => {
 			const cursor = await MoviesCollection.find().toArray();
 			res.send(cursor);

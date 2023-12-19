@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -48,6 +48,139 @@ async function run() {
 			}
 		})
 
+		///////******** Edit Delete Movies ********/////////
+		app.get('/allMovies', async (req, res) => {
+			const cursor = await MoviesCollection.find().toArray();
+			res.send(cursor);
+		})
+
+		///////******** Get data by id ********/////////
+		app.get("/editMovie/:id", async (req, res) => {
+			const id = req.params.id;
+			const query = {
+				_id: new ObjectId(id),
+			};
+
+			const options = {
+				projection: {
+					name: 1,
+					type: 1,
+					category: 1,
+					thumbnail: 1,
+					MovieLink: 1,
+					desc: 1,
+					Quality: 1,
+					Language: 1,
+					hostEmail: 1,
+					hostName: 1,
+					_id: 1,
+				},
+			};
+
+			const result = await MoviesCollection.findOne(query, options);
+			res.send(result);
+		});
+
+		///////******** Receive single data for update Movies ********/////////
+		/**app.get('update/:id', async(req, res) => {
+			const id = req.params.id;
+			const query = {_id: new ObjectId(id)}
+			const result = await MoviesCollection.findOne(query);
+			res.send(result)
+		});**/
+
+		///////******** Update data ********/////////
+		app.put('/editMovie/:id', async (req, res) => {
+			const id = req.params.id;
+			const filter = { _id: new ObjectId(id) }
+			const option = { upsert: true };
+			const updatedMovie = req.body;
+			const movie = {
+				$set: {
+					name: updatedMovie.name,
+					type: updatedMovie.type,
+					category: updatedMovie.category,
+					thumbnail: updatedMovie.thumbnail,
+					MovieLink: updatedMovie.MovieLink,
+					desc: updatedMovie.desc,
+					Quality: updatedMovie.Quality,
+					Language: updatedMovie.Language,
+					hostEmail: updatedMovie.hostEmail,
+					hostName: updatedMovie.hostName,
+
+				}
+			}
+			const result = await MoviesCollection.updateOne(filter, movie, option)
+			res.send(result)
+		});
+
+
+
+		///////******** Single movie details ********/////////
+		app.get("/movieDetails/:id", async (req, res) => {
+			const id = req.params.id;
+			const query = {
+				_id: new ObjectId(id),
+			};
+
+			const options = {
+				projection: {
+					name: 1,
+					type: 1,
+					category: 1,
+					thumbnail: 1,
+					MovieLink: 1,
+					desc: 1,
+					Quality: 1,
+					Language: 1,
+					hostEmail: 1,
+					hostName: 1,
+					_id: 1,
+				},
+			};
+
+			const result = await MoviesCollection.findOne(query, options);
+			res.send(result);
+		});
+
+		///////******** Single anime details ********/////////
+		app.get("/animeDetails/:id", async (req, res) => {
+			const id = req.params.id;
+			const query = {
+				_id: new ObjectId(id),
+			};
+
+			const options = {
+				projection: {
+					name: 1,
+					type: 1,
+					category: 1,
+					thumbnail: 1,
+					MovieLink: 1,
+					desc: 1,
+					Quality: 1,
+					Language: 1,
+					hostEmail: 1,
+					hostName: 1,
+					_id: 1,
+				},
+			};
+
+			const result = await MoviesCollection.findOne(query, options);
+			res.send(result);
+		});
+
+
+
+		///////******** Delete Movie ********/////////
+
+		app.delete('/allMovies/:id', async (req, res) => {
+			const id = req.params.id;
+			console.log(id)
+			const query = { _id: new ObjectId(id) }
+			const result = await MoviesCollection.deleteOne(query);
+			res.send(result)
+		});
 
 		app.post('/addMovie', async (req, res) => {
 			const addMovie = req.body;
@@ -79,5 +212,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-	console.log(`SIMPLE MOIVE IS RUNNING on port, ${ port }`);
+	console.log(`SIMPLE MOVIE IS RUNNING on port, ${port}`);
 })
